@@ -9,7 +9,7 @@
 use Purelightme\RedisLock\Exception\InternalException;
 use Purelightme\RedisLock\SequenceTask;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $config = [
     'host' => 'redis',
