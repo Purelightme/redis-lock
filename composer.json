@@ -9,8 +9,10 @@
     ],
     "require": {
         "predis/predis": "^1.1",
-        "ext-pcntl": "*",
-        "ext-redis": "*"
+        "ext-pcntl": "*"
+    },
+    "suggest": {
+        "ext-posix": "*"
     },
     "autoload": {
         "psr-4": {
