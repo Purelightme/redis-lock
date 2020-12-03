@@ -17,9 +17,13 @@ class SequenceTask
 {
     public static function execute(array $config, $callable)
     {
+        if (!function_exists('pcntl_fork')){
+            throw new InternalException('请先安装 pcntl 扩展');
+        }
+
         $lock = new RedisLock($config);
         if ($lock->acquire() === false) {
-            throw new InternalException('获取锁失败:'.$lock);
+            throw new InternalException('获取锁失败:' . $lock);
         }
 
         $pid = pcntl_fork();
@@ -31,7 +35,7 @@ class SequenceTask
                 $interval = $config['interval'] ?? $config['seconds'] ?? 40;
                 sleep($interval);
                 if ($lock->keepAlive() === false) {
-                    exit(0);
+                    break;
                 }
             }
         } else {
@@ -43,6 +47,9 @@ class SequenceTask
             }finally{
                 if ($lock->release() === false){
                     throw new InternalException('释放锁失败:'.$lock);
+                }
+                if (function_exists('posix_kill')){
+                    posix_kill($pid,SIGABRT);
                 }
             }
             pcntl_waitpid($pid,$status);

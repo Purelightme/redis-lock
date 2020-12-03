@@ -11,6 +11,7 @@ use Purelightme\RedisLock\SequenceTask;
 
 require_once __DIR__ . '/../../../autoload.php';
 
+
 $config = [
     'host' => 'redis',
     'name' => 'default',    //Redis key名称
